@@ -15,7 +15,8 @@ const client = new ApolloClient({
       },
     });
   },
-  uri: "/graphql",
+  // establish connection to the back-end server's /graphql
+  uri: "http:/localhost:3001/graphql",
 });
 
 function App() {

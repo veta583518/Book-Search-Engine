@@ -1,7 +1,7 @@
 const { AuthenticationError } = require("apollo-server-express");
 const { User } = require("../models");
 
-// const { signToken } = require('../utils/auth');
+const { signToken } = require("../utils/auth");
 
 const resolvers = {
   Query: {
@@ -9,8 +9,8 @@ const resolvers = {
       if (context.user) {
         const userData = await User.findOne({ _id: context.user._id })
           .select("-__v -password")
-          .populate("thoughts")
-          .populate("friends");
+          .populate("books")
+          .populate("users");
 
         return userData;
       }
@@ -31,6 +31,7 @@ const resolvers = {
       }
 
       const correctPw = await user.isCorrectPassword(password);
+
       if (!correctPw) {
         throw new AuthenticationError("Incorrect credentials");
       }
@@ -43,7 +44,7 @@ const resolvers = {
       if (context.user) {
         const updatedUser = await User.findOneAndUpdate(
           { _id: context.user._id },
-          { $PUSH: { savedBooks: input } },
+          { $push: { savedBooks: input } },
           { new: true }
         );
         return updatedUser;
