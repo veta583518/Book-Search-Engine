@@ -18,7 +18,7 @@ const SavedBooks = () => {
   const [setUserData] = useState({});
   const { userData } = useQuery(GET_ME, {
     onCompleted: () => {
-      setUserData(UserData.me);
+      setUserData(userData.me);
     },
   });
   // use this to determine if `useEffect()` hook needs to run again
