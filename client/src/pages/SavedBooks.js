@@ -15,12 +15,8 @@ import { GET_ME } from "../utils/queries";
 import { REMOVE_BOOK } from "../utils/mutations";
 
 const SavedBooks = () => {
-  const [userData, setUserData] = useState({});
-  const { userData } = useQuery(GET_ME, {
-    onCompleted: () => {
-      setUserData(UserData.me);
-    },
-  });
+  //const [userData, setUserData] = useState({});
+  const { userData } = useQuery(GET_ME);
   // use this to determine if `useEffect()` hook needs to run again
   const userDataLength = Object.keys(userData).length;
   const [removeBook] = useMutation(REMOVE_BOOK);
