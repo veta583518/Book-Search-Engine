@@ -3,9 +3,10 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import SearchBooks from "./pages/SearchBooks";
 import SavedBooks from "./pages/SavedBooks";
 import Navbar from "./components/Navbar";
+// create Apollo Provider
 import { ApolloProvider } from "@apollo/react-hooks";
 import ApolloClient from "apollo-boost";
-
+// establish the connection to the back-end server's /graphql endpoint
 const client = new ApolloClient({
   request: (operation) => {
     const token = localStorage.getItem("id_token");

@@ -10,9 +10,10 @@ import {
 } from "react-bootstrap";
 
 import Auth from "../utils/auth";
+// integrate Apollo Hooks
 import { useMutation } from "@apollo/react-hooks";
 import { SAVE_BOOK } from "../utils/mutations";
-import { QUERY_ME } from "../utils/queries";
+import { GET_ME } from "../utils/queries";
 import { searchGoogleBooks } from "../utils/API";
 import { saveBookIds, getSavedBookIds } from "../utils/localStorage";
 
@@ -24,12 +25,12 @@ const SearchBooks = () => {
 
   // create state to hold saved bookId values
   const [savedBookIds, setSavedBookIds] = useState(getSavedBookIds());
-
-  const [saveBook, { error }] = useMutation(SAVE_BOOK, {
+  // use useMutation to make query request
+  const [saveBook] = useMutation(SAVE_BOOK, {
     update(cache, { data: { saveBook } }) {
-      const { me } = cache.readQuery({ query: QUERY_ME });
+      const { me } = cache.readQuery({ query: GET_ME });
       cache.writeQuery({
-        query: QUERY_ME,
+        query: GET_ME,
         data: { me: { ...me, savedBooks: [...me.savedBooks, saveBook] } },
       });
     },
@@ -86,7 +87,7 @@ const SearchBooks = () => {
     }
 
     try {
-      const response = await saveBook(bookToSave, token);
+      const response = await saveBook({ variable: { input: bookToSave } });
 
       if (!response.ok) {
         throw new Error("something went wrong!");
